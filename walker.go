@@ -22,6 +22,9 @@ type item struct {
 // It returns false when the walk stops at the end of the tree.
 func (w *Walker) Next() bool {
 	// check if we need to init cur, maybe this should be inside Walk
+	var entries []*Entry
+	var err error
+	var first bool
 	if w.cur == nil {
 		w.cur = &item{
 			path: w.root,
@@ -29,10 +32,14 @@ func (w *Walker) Next() bool {
 				Type: EntryTypeFolder,
 			},
 		}
+		first = true
 	}
 
-	if w.descend && w.cur.entry.Type == EntryTypeFolder {
-		entries, err := w.serverConn.List(w.cur.path)
+	if first {
+		w.stack = append(w.stack, w.cur)
+		first = false
+	} else if w.descend && w.cur.entry.Type == EntryTypeFolder {
+		entries, err = w.serverConn.List(w.cur.path)
 
 		// an error occurred, drop out and stop walking
 		if err != nil {
