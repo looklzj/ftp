@@ -697,6 +697,11 @@ func (c *ServerConn) ModTime(path string, uptime string) error {
 	return err
 }
 
+func (c *ServerConn) GetModTime(path string) (string, error) {
+	_, res, err := c.cmd(StatusCommandOK, "MDTM %s", path)
+	return res, err
+}
+
 // RemoveDir issues a RMD FTP command to remove the specified directory from
 // the remote FTP server.
 func (c *ServerConn) RemoveDir(path string) error {
