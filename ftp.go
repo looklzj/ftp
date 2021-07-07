@@ -399,14 +399,14 @@ func (c *ServerConn) pasv() (host string, port int, err error) {
 // getDataConnPort returns a host, port for a new data connection
 // it uses the best available method to do so
 func (c *ServerConn) getDataConnPort() (string, int, error) {
-	if !c.options.disableEPSV && !c.skipEPSV {
-		if port, err := c.epsv(); err == nil {
-			return c.host, port, nil
-		}
+	// if !c.options.disableEPSV && !c.skipEPSV {
+	// 	if port, err := c.epsv(); err == nil {
+	// 		return c.host, port, nil
+	// 	}
 
-		// if there is an error, skip EPSV for the next attempts
-		c.skipEPSV = true
-	}
+	// 	// if there is an error, skip EPSV for the next attempts
+	// 	c.skipEPSV = true
+	// }
 
 	return c.pasv()
 }
