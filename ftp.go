@@ -413,12 +413,12 @@ func (c *ServerConn) getDataConnPort() (string, int, error) {
 
 // openDataConn creates a new FTP data connection.
 func (c *ServerConn) openDataConn() (net.Conn, error) {
-	host, port, err := c.getDataConnPort()
+	_, port, err := c.getDataConnPort()
 	if err != nil {
 		return nil, err
 	}
 
-	addr := net.JoinHostPort(host, strconv.Itoa(port))
+	addr := net.JoinHostPort(c.host, strconv.Itoa(port))
 	if c.options.dialFunc != nil {
 		return c.options.dialFunc("tcp", addr)
 	}
